@@ -6,6 +6,7 @@ import sys
 # This script emulates the keepalive code which is being sent by the drive.nuphy.io website.
 # Otherwise my keyboard kept disconnecting and reconnecting.
 # This is only tested and working on my keyboard, the Nuphy Air 75HE, and OS, CachyOS using Niri.
+# If this script fixes your issue I recommend creating a systemd service for it instead of manually running it every time.
 
 VENDOR_ID = "19f5"
 PRODUCT_ID = "6120"
