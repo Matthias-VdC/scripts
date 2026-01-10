@@ -1,3 +1,4 @@
+
 import os
 import time
 import glob
@@ -15,16 +16,32 @@ PRODUCT_ID = "6120"
 PACKET = bytes.fromhex("55 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00" + (" 00" * 48))
 
 def find_nuphy_device():
-    # Finds the correct /dev/hidraw path.
+    target_id_str = f"HID_ID=0003:{VENDOR_ID.upper().zfill(8)}:{PRODUCT_ID.upper().zfill(8)}"
+    found_devices = []
+
+    # Check all hidraw devices
     for path in glob.glob("/sys/class/hidraw/hidraw*"):
         try:
             with open(os.path.join(path, "device/uevent"), "r") as f:
                 uevent = f.read()
-                if f"HID_ID=0003:{VENDOR_ID.upper().zfill(8)}:{PRODUCT_ID.upper().zfill(8)}" in uevent:
-                    return os.path.join("/dev", os.path.basename(path))
+                if target_id_str in uevent:
+                    # Full path found
+                    dev_node = os.path.join("/dev", os.path.basename(path))
+                    found_devices.append(dev_node)
         except Exception:
             continue
-    return None
+
+    if not found_devices:
+        return None
+
+    # Sort hidraw and pick the middle one, should be vendor data interface hopefully?
+    found_devices.sort()
+    best_device = found_devices[1]
+
+    print(f"Found interfaces: {found_devices}")
+    print(f"Selecting vendor interface: {best_device}")
+
+    return best_device
 
 def main():
     dev_path = find_nuphy_device()
@@ -47,10 +64,16 @@ def main():
         while True:
             time.sleep(60)
 
+            # We try again, hopefully this fixes changed HID id...
+            os.write(fd, PACKET)
+            print("Sent heartbeat")
+
+
     except OSError as e:
         print(f"Error: {e}")
+        # kills script so systemd restarts it
+        sys.exit(1)
     finally:
-        # This only runs if the script is killed
         if 'fd' in locals():
             os.close(fd)
 
