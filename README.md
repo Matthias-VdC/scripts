@@ -20,13 +20,13 @@ A compiled binary that is lighter on resources and handles device reconnection a
 ```bash
 cd nuphy-keepalive-rust
 cargo build --release
-sudo cp target/release/nuphy-keepalive-rust /usr/local/bin/nuphy-keeper
+sudo cp target/release/nuphy-keepalive-rust /usr/local/bin/nuphy-keepalive-rust
 ```
 
 **Run:**
 Add this to your window manager startup (e.g., Niri, Sway, Hyprland config):
 ```bash
-/usr/local/bin/nuphy-keeper &
+/usr/local/bin/nuphy-keepalive-rust &
 ```
 
 or this for a systemd service:
