@@ -23,13 +23,12 @@ cargo build --release
 sudo cp target/release/nuphy-keepalive-rust /usr/local/bin/nuphy-keepalive-rust
 ```
 
-**Run:**
-Add this to your window manager startup (e.g., Niri, Sway, Hyprland config):
-```bash
-/usr/local/bin/nuphy-keepalive-rust &
-```
+**Run:**   
+add this systemd service:
 
-or this for a systemd service:
+```bash
+sudo nano /etc/systemd/system/nuphy-keepalive.service
+```
 
 ```service
 [Unit]
@@ -43,6 +42,12 @@ User=root
 
 [Install]
 WantedBy=multi-user.target
+```
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now nuphy-keepalive
+sudo systemctl status nuphy-keepalive
 ```
 
 ### Option B: Python Version
