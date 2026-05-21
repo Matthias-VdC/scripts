@@ -74,11 +74,12 @@ A Linux CLI for the Pulsar 4K Wireless Dongle (VID:PID `3554:f509`). Pulsar's ow
 
 **Requirements:** `pip install hidapi`
 
-**Subcommands:**
+**Reads:**
 ```bash
-sudo pulsar-4k/pulsar-4k.py [commands]     #
+sudo pulsar-4k/pulsar-4k.py [read]
                             battery       # battery percentage (0-100)
                             dpi           # active DPI value
+                            dpi-list      # DPI value of each configured stage (one per line)
                             lod           # lift-off distance in mm (1 or 2)
                             debounce      # debounce time in ms
                             motion-sync   # 0 = off, 1 = on
@@ -86,7 +87,17 @@ sudo pulsar-4k/pulsar-4k.py [commands]     #
                             ripple        # 0 = off, 1 = on
                             auto-sleep    # seconds until sleep
                             polling       # polling rate in Hz (125/250/500/1000/2000/4000)
-                            dpi-list      # DPI value of each configured stage (one per line)
 ```
 
-Each subcommand prints an integer on stdout. Currently only reads data. Goals are for it to be able to read and write all the same settings available in Fusion.
+**Writes:**
+```bash
+sudo pulsar-4k/pulsar-4k.py [write] [args]
+                            dpi <stage>           # switch active DPI stage (0-indexed)
+                            dpi-set <stage> <dpi> # set DPI value of stage (50..26000, step 50)
+                            lod <1|2>             # set lift-off distance (1mm or 2mm)
+                            motion-sync <0|1>     # 0 = off, 1 = on
+                            angle-snap <0|1>      # 0 = off, 1 = on
+                            ripple <0|1>          # 0 = off, 1 = on
+```
+
+Reads print an integer on stdout. Writes are silent and validate their input before sending anything to the dongle. Working toward parity with all settings available in Fusion.
