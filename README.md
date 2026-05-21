@@ -4,6 +4,7 @@
 | :--- | :--- | :--- | :--- |
 | [**`nuphy-keepalive`**](#1-nuphy-keep-alive-rust--python) | Rust / Python | Prevents NuPhy Air75 HE (and similar) keyboards from continuously reconnecting/sleeping. Rust version is recommended for lower resource usage. | `hidraw`, `udev` |
 | [**`undervolt.sh`**](#2-undervolt-amd-cpu-undervoltsh) | Bash | Automates Ryzen CPU undervolting. Applies Curve Optimizer offsets and runs stress tests to verify stability. | `ryzenadj`, `mprime`, `7zip` |
+| [**`pulsar-4k`**](#3-pulsar-4k-dongle-pulsar-4kpy) | Python | Reads battery percentage from the Pulsar 4K Wireless Dongle (`3554:f509`). Should work with any mouse using that dongle (X2H, X2V2, X2A, ...). | `hidapi` |
 
 ---
 
@@ -12,13 +13,13 @@
 Fixes the issue where NuPhy keyboards (specifically the Air75 HE) disconnect or go to sleep aggressively on Linux. It works by scanning for the device ID `19f5:6120` (specifically the vendor interface) and sending a specific 64-byte initialization packet every 60 seconds.
 
 ### Option A: Rust Version (Recommended)
-**File:** [`nuphy-keepalive-rust/src/main.rs`](./nuphy-keepalive-rust/src/main.rs)
+**File:** [`nuphy-keepalive/rust/src/main.rs`](./nuphy-keepalive/rust/src/main.rs)
 
 A compiled binary that is lighter on resources and handles device reconnection automatically.
 
 **Build & Install:**
 ```bash
-cd nuphy-keepalive-rust
+cd nuphy-keepalive/rust
 cargo build --release
 sudo cp target/release/nuphy-keepalive-rust /usr/local/bin/nuphy-keepalive-rust
 ```
@@ -51,12 +52,33 @@ sudo systemctl status nuphy-keepalive
 ```
 
 ### Option B: Python Version
-**File:** [`nuphy-keepalive.py`](./nuphy-keepalive.py)
+**File:** [`nuphy-keepalive/nuphy-keepalive.py`](./nuphy-keepalive/nuphy-keepalive.py)
 
 Useful for quick editing or if you do not have a Rust toolchain installed. Requires a Systemd service to handle restarts if the device disconnects.
 
 ---
 
-## [2. Undervolt AMD CPU (`undervolt.sh`)](./undervolt.sh)
+## 2. Undervolt AMD CPU (`undervolt.sh`)
+
+**File:** [`undervolt/undervolt.sh`](./undervolt/undervolt.sh)
 
 Automatically undervolts and stress tests / performance tests the applied undervolt using 7Zip and mprime. The undervolt is done using ryzenadj.
+
+---
+
+## 3. Pulsar 4K Dongle (`pulsar-4k.py`)
+
+Reads battery percentage from the Pulsar 4K Wireless Dongle (VID:PID `3554:f509`) on Linux. The dongle ships with several Pulsar wireless mice (X2H, X2V2, X2A); this tool talks to the dongle, not the mouse directly.
+
+**File:** [`pulsar-4k/pulsar-4k.py`](./pulsar-4k/pulsar-4k.py)
+
+**Requirements:** `pip install hidapi`
+
+**Run:**
+```bash
+sudo pulsar-4k/pulsar-4k.py battery
+```
+
+Prints the battery percentage as a bare integer. Exit codes: `0` ok, `1` dongle not found, `2` cannot open hidraw (run as root).
+
+Reverse-engineering notes, capture files, and the HID protocol glossary live in [`pulsar-4k/`](./pulsar-4k/).

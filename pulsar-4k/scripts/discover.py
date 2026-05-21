@@ -1,17 +1,14 @@
-# Verify if HID interfaces expose battery
-
-import sys
+# Verify if HID interfaces expose battery via the standard usage.
 
 import hid
 
 VID = 0x3554
-PID = 0xF509
+PID = 0xf509
 
-interfaces = [i for i in hid.enumerate(VID, PID)]
-
-for iface in interfaces:
+for iface in hid.enumerate(VID, PID):
     page = iface["usage_page"]
     usage = iface["usage"]
+    # HID Generic Device page 0x06, usage 0x20 = Battery Strength
     is_battery = page == 0x0006 and usage == 0x0020
     flag = "  <- BATTERY!!!" if is_battery else ""
     print(
