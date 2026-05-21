@@ -32,6 +32,7 @@ SETTING_WRITES = {
     "motion-sync": {0, 1},
     "angle-snap": {0, 1},
     "ripple": {0, 1},
+    "debounce": set(range(31)),
 }
 
 
@@ -123,9 +124,22 @@ elif cmd == "dpi-set":
     high = (v >> 8) * 0x44
     setting_write(DPI_STAGE_TABLE_ADDR + stage * 4, cell_bytes(low, low, high))
 elif cmd == "auto-sleep":
-    print(flash_read(0xB7, 1)[0] * 10)
+    if len(sys.argv) > 2:
+        seconds = int(sys.argv[2])
+        if seconds % 10 != 0 or not (10 <= seconds <= 600):
+            raise ValueError(f"auto-sleep {seconds} must be a multiple of 10, between 10 and 600")
+        setting_write(0xB7, cell_bytes(seconds // 10))
+    else:
+        print(flash_read(0xB7, 1)[0] * 10)
 elif cmd == "polling":
-    print(POLLING_RATES[flash_read(0x00, 1)[0]])
+    if len(sys.argv) > 2:
+        hz = int(sys.argv[2])
+        bit = next((b for b, h in POLLING_RATES.items() if h == hz), None)
+        if bit is None:
+            raise ValueError(f"polling {hz} invalid; allowed: {sorted(POLLING_RATES.values())}")
+        setting_write(0x00, cell_bytes(bit))
+    else:
+        print(POLLING_RATES[flash_read(0x00, 1)[0]])
 elif cmd == "dpi-list":
     stage_count = flash_read(0x02, 1)[0]
     for i in range(stage_count):

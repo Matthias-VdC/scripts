@@ -98,6 +98,9 @@ sudo pulsar-4k/pulsar-4k.py [write] [args]
                             motion-sync <0|1>     # 0 = off, 1 = on
                             angle-snap <0|1>      # 0 = off, 1 = on
                             ripple <0|1>          # 0 = off, 1 = on
+                            auto-sleep <seconds>  # 10..600 in steps of 10
+                            debounce <ms>         # 0..30
+                            polling <Hz>          # 125/250/500/1000/2000/4000
 ```
 
 Reads print an integer on stdout. Writes are silent and validate their input before sending anything to the dongle. Working toward parity with all settings available in Fusion.
