@@ -68,5 +68,10 @@ elif cmd == "auto-sleep":
     print(flash_read(0xB7, 1)[0] * 10)
 elif cmd == "polling":
     print(POLLING_RATES[flash_read(0x00, 1)[0]])
+elif cmd == "dpi-list":
+    stage_count = flash_read(0x02, 1)[0]
+    for i in range(stage_count):
+        cell = flash_read(DPI_STAGE_TABLE_ADDR + i * 4, 4)
+        print((cell[0] + 1) * DPI_STEP)
 elif cmd in SETTING_ADDRS:
     print(flash_read(SETTING_ADDRS[cmd], 1)[0])
