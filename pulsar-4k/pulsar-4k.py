@@ -18,6 +18,15 @@ SETTING_ADDRS = {
     "ripple": 0xB1,
 }
 
+POLLING_RATES = {
+    0x01: 1000,
+    0x02: 500,
+    0x04: 250,
+    0x08: 125,
+    0x10: 2000,
+    0x20: 4000,
+}
+
 
 def find_dongle():
     for iface in hid.enumerate(VID, PID):
@@ -52,10 +61,12 @@ cmd = sys.argv[1]
 if cmd == "battery":
     print(query(0x04)[6])
 elif cmd == "dpi":
-    stage = flash_read(0x00, 1)[0]
+    stage = flash_read(0x04, 1)[0]
     cell = flash_read(DPI_STAGE_TABLE_ADDR + stage * 4, 4)
     print((cell[0] + 1) * DPI_STEP)
 elif cmd == "auto-sleep":
     print(flash_read(0xB7, 1)[0] * 10)
+elif cmd == "polling":
+    print(POLLING_RATES[flash_read(0x00, 1)[0]])
 elif cmd in SETTING_ADDRS:
     print(flash_read(SETTING_ADDRS[cmd], 1)[0])

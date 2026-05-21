@@ -84,6 +84,7 @@ sudo pulsar-4k/pulsar-4k.py motion-sync   # 0 = off, 1 = on
 sudo pulsar-4k/pulsar-4k.py angle-snap    # 0 = off, 1 = on
 sudo pulsar-4k/pulsar-4k.py ripple        # 0 = off, 1 = on
 sudo pulsar-4k/pulsar-4k.py auto-sleep    # seconds until sleep
+sudo pulsar-4k/pulsar-4k.py polling       # polling rate in Hz (125/250/500/1000/2000/4000)
 ```
 
 Each subcommand prints an integer on stdout. Currently only reads data. Goals are for it to be able to read and write all the same settings available in Fusion.
