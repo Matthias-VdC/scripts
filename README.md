@@ -76,16 +76,17 @@ A Linux CLI for the Pulsar 4K Wireless Dongle (VID:PID `3554:f509`). Pulsar's ow
 
 **Subcommands:**
 ```bash
-sudo pulsar-4k/pulsar-4k.py battery       # battery percentage (0-100)
-sudo pulsar-4k/pulsar-4k.py dpi           # active DPI value
-sudo pulsar-4k/pulsar-4k.py lod           # lift-off distance in mm (1 or 2)
-sudo pulsar-4k/pulsar-4k.py debounce      # debounce time in ms
-sudo pulsar-4k/pulsar-4k.py motion-sync   # 0 = off, 1 = on
-sudo pulsar-4k/pulsar-4k.py angle-snap    # 0 = off, 1 = on
-sudo pulsar-4k/pulsar-4k.py ripple        # 0 = off, 1 = on
-sudo pulsar-4k/pulsar-4k.py auto-sleep    # seconds until sleep
-sudo pulsar-4k/pulsar-4k.py polling       # polling rate in Hz (125/250/500/1000/2000/4000)
-sudo pulsar-4k/pulsar-4k.py dpi-list      # DPI value of each configured stage (one per line)
+sudo pulsar-4k/pulsar-4k.py [commands]     #
+                            battery       # battery percentage (0-100)
+                            dpi           # active DPI value
+                            lod           # lift-off distance in mm (1 or 2)
+                            debounce      # debounce time in ms
+                            motion-sync   # 0 = off, 1 = on
+                            angle-snap    # 0 = off, 1 = on
+                            ripple        # 0 = off, 1 = on
+                            auto-sleep    # seconds until sleep
+                            polling       # polling rate in Hz (125/250/500/1000/2000/4000)
+                            dpi-list      # DPI value of each configured stage (one per line)
 ```
 
 Each subcommand prints an integer on stdout. Currently only reads data. Goals are for it to be able to read and write all the same settings available in Fusion.
