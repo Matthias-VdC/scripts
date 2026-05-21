@@ -4,7 +4,7 @@
 | :--- | :--- | :--- | :--- |
 | [**`nuphy-keepalive`**](#1-nuphy-keep-alive-rust--python) | Rust / Python | Prevents NuPhy Air75 HE (and similar) keyboards from continuously reconnecting/sleeping. Rust version is recommended for lower resource usage. | `hidraw`, `udev` |
 | [**`undervolt.sh`**](#2-undervolt-amd-cpu-undervoltsh) | Bash | Automates Ryzen CPU undervolting. Applies Curve Optimizer offsets and runs stress tests to verify stability. | `ryzenadj`, `mprime`, `7zip` |
-| [**`pulsar-4k`**](#3-pulsar-4k-dongle-pulsar-4kpy) | Python | Reads battery percentage from the Pulsar 4K Wireless Dongle (`3554:f509`). Should work with any mouse using that dongle (X2H, X2V2, X2A, ...). | `hidapi` |
+| [**`pulsar-4k`**](#3-pulsar-4k-dongle-pulsar-4kpy) | Python | A Linux CLI for the Pulsar 4K Dongle (`3554:f509`). Pulsar's own software (Fusion) is Windows only. Reads battery and active DPI. Should work with any mouse that uses this dongle (X2H, X2V2, X2A). | `hidapi` |
 
 ---
 
@@ -68,17 +68,16 @@ Automatically undervolts and stress tests / performance tests the applied underv
 
 ## 3. Pulsar 4K Dongle (`pulsar-4k.py`)
 
-Reads battery percentage from the Pulsar 4K Wireless Dongle (VID:PID `3554:f509`) on Linux. The dongle ships with several Pulsar wireless mice (X2H, X2V2, X2A); this tool talks to the dongle, not the mouse directly.
+A Linux CLI for the Pulsar 4K Wireless Dongle (VID:PID `3554:f509`). Pulsar's own configuration software, [Fusion](https://pulsar.gg/pages/download), only runs on Windows. This tool talks directly to the dongle over its vendor HID interface. Should work with any Pulsar wireless mouse that uses the 4K dongle (X2H, X2V2, X2A).
 
 **File:** [`pulsar-4k/pulsar-4k.py`](./pulsar-4k/pulsar-4k.py)
 
 **Requirements:** `pip install hidapi`
 
-**Run:**
+**Subcommands:**
 ```bash
-sudo pulsar-4k/pulsar-4k.py battery
+sudo pulsar-4k/pulsar-4k.py battery   # battery percentage (0-100)
+sudo pulsar-4k/pulsar-4k.py dpi       # active DPI value
 ```
 
-Prints the battery percentage as a bare integer. Exit codes: `0` ok, `1` dongle not found, `2` cannot open hidraw (run as root).
-
-Reverse-engineering notes, capture files, and the HID protocol glossary live in [`pulsar-4k/`](./pulsar-4k/).
+Each subcommand prints an integer on stdout. Currently only reads data. Goals are for it to be able to read and write all the same settings available in Fusion.
