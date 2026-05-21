@@ -16,7 +16,6 @@ SETTING_ADDRS = {
     "motion-sync": 0xAB,
     "angle-snap": 0xAF,
     "ripple": 0xB1,
-    "auto-sleep": 0xB7,
 }
 
 
@@ -56,5 +55,7 @@ elif cmd == "dpi":
     stage = flash_read(0x00, 1)[0]
     cell = flash_read(DPI_STAGE_TABLE_ADDR + stage * 4, 4)
     print((cell[0] + 1) * DPI_STEP)
+elif cmd == "auto-sleep":
+    print(flash_read(0xB7, 1)[0] * 10)
 elif cmd in SETTING_ADDRS:
     print(flash_read(SETTING_ADDRS[cmd], 1)[0])

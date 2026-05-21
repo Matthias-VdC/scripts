@@ -4,7 +4,7 @@
 | :--- | :--- | :--- | :--- |
 | [**`nuphy-keepalive`**](#1-nuphy-keep-alive-rust--python) | Rust / Python | Prevents NuPhy Air75 HE (and similar) keyboards from continuously reconnecting/sleeping. Rust version is recommended for lower resource usage. | `hidraw`, `udev` |
 | [**`undervolt.sh`**](#2-undervolt-amd-cpu-undervoltsh) | Bash | Automates Ryzen CPU undervolting. Applies Curve Optimizer offsets and runs stress tests to verify stability. | `ryzenadj`, `mprime`, `7zip` |
-| [**`pulsar-4k`**](#3-pulsar-4k-dongle-pulsar-4kpy) | Python | A Linux CLI for the Pulsar 4K Dongle (`3554:f509`). Pulsar's own software (Fusion) is Windows only. Reads battery and active DPI. Should work with any mouse that uses this dongle (X2H, X2V2, X2A). | `hidapi` |
+| [**`pulsar-4k`**](#3-pulsar-4k-dongle-pulsar-4kpy) | Python | A Linux CLI for the Pulsar 4K Dongle (`3554:f509`). Pulsar's own software (Fusion) is Windows only. Reads several mouse settings (battery, DPI, LOD, debounce, etc.). Should work with any mouse that uses this dongle (X2H, X2V2, X2A). | `hidapi` |
 
 ---
 
@@ -76,8 +76,14 @@ A Linux CLI for the Pulsar 4K Wireless Dongle (VID:PID `3554:f509`). Pulsar's ow
 
 **Subcommands:**
 ```bash
-sudo pulsar-4k/pulsar-4k.py battery   # battery percentage (0-100)
-sudo pulsar-4k/pulsar-4k.py dpi       # active DPI value
+sudo pulsar-4k/pulsar-4k.py battery       # battery percentage (0-100)
+sudo pulsar-4k/pulsar-4k.py dpi           # active DPI value
+sudo pulsar-4k/pulsar-4k.py lod           # lift-off distance in mm (1 or 2)
+sudo pulsar-4k/pulsar-4k.py debounce      # debounce time in ms
+sudo pulsar-4k/pulsar-4k.py motion-sync   # 0 = off, 1 = on
+sudo pulsar-4k/pulsar-4k.py angle-snap    # 0 = off, 1 = on
+sudo pulsar-4k/pulsar-4k.py ripple        # 0 = off, 1 = on
+sudo pulsar-4k/pulsar-4k.py auto-sleep    # seconds until sleep
 ```
 
 Each subcommand prints an integer on stdout. Currently only reads data. Goals are for it to be able to read and write all the same settings available in Fusion.
