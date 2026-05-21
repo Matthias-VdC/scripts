@@ -10,6 +10,15 @@ PID = 0xF509
 DPI_STAGE_TABLE_ADDR = 0x0C
 DPI_STEP = 50
 
+SETTING_ADDRS = {
+    "lod": 0x0A,
+    "debounce": 0xA9,
+    "motion-sync": 0xAB,
+    "angle-snap": 0xAF,
+    "ripple": 0xB1,
+    "auto-sleep": 0xB7,
+}
+
 
 def find_dongle():
     for iface in hid.enumerate(VID, PID):
