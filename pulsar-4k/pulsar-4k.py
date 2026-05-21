@@ -56,3 +56,5 @@ elif cmd == "dpi":
     stage = flash_read(0x00, 1)[0]
     cell = flash_read(DPI_STAGE_TABLE_ADDR + stage * 4, 4)
     print((cell[0] + 1) * DPI_STEP)
+elif cmd in SETTING_ADDRS:
+    print(flash_read(SETTING_ADDRS[cmd], 1)[0])
